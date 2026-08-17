@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>บทเรียนออนไลน์: การหมุนเวียนของอากาศบนโลก</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4F8A8B;
+            --secondary: #FBD46D;
+            --accent: #FF6B6B;
+            --bg-yellow: #FFF8D6;
+            --glass-bg: rgba(255, 255, 255, 0.65);
+            --glass-border: rgba(255, 255, 255, 0.4);
+            --shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Sans Thai', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-yellow);
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(255,255,255,0.8) 0%, transparent 10%),
+                radial-gradient(circle at 80% 20%, rgba(255,255,255,0.9) 0%, transparent 15%),
+                radial-gradient(circle at 50% 80%, rgba(255,255,255,0.7) 0%, transparent 20%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            color: #333;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Clouds decoration */
+        .cloud {
+            position: fixed;
+            background: white;
+            border-radius: 50px;
+            opacity: 0.8;
+            animation: float 20s infinite linear;
+            z-index: -1;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        .cloud::before, .cloud::after {
+            content: '';
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+        }
+        .cloud1 { width: 150px; height: 50px; top: 10%; left: -200px; animation-duration: 35s; }
+        .cloud1::before { width: 70px; height: 70px; top: -30px; left: 20px; }
+        .cloud1::after { width: 50px; height: 50px; top: -20px; right: 20px; }
+        
+        .cloud2 { width: 200px; height: 60px; top: 40%; left: -300px; animation-duration: 45s; animation-delay: 5s; transform: scale(0.8); }
+        .cloud2::before { width: 90px; height: 90px; top: -40px; left: 30px; }
+        .cloud2::after { width: 70px; height: 70px; top: -30px; right: 30px; }
+
+        @keyframes float {
+            0% { transform: translateX(-200px); }
+            100% { transform: translateX(120vw); }
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Glassmorphism */
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 30px;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        /* Light sweep effect */
+        .glass-card.sweep-effect::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -150%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0) 100%);
+            transform: skewX(-25deg);
+            animation: sweep 10s infinite;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        @keyframes sweep {
+            0% { left: -150%; }
+            20% { left: 200%; }
+            100% { left: 200%; }
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        h1 { color: var(--primary); font-size: 1.8rem; margin-bottom: 5px; }
+        h2 { color: #555; font-size: 1.2rem; font-weight: 600; }
+        .badge {
+            display: inline-block;
+            background: var(--accent);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-top: 10px;
+            box-shadow: 0 4px 10px rgba(255, 107, 107, 0.3);
+        }
+
+        /* Buttons */
+        button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 16px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            box-shadow: 0 4px 15px rgba(79, 138, 139, 0.3);
+            position: relative;
+            z-index: 2;
+        }
+        button:hover:not(:disabled) {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 8px 25px rgba(79, 138, 139, 0.4);
+        }
+        button:active:not(:disabled) {
+            transform: translateY(0);
+        }
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            box-shadow: none;
+            opacity: 0.7;
+        }
+
+        .btn-secondary { background: var(--secondary); color: #333; box-shadow: 0 4px 15px rgba(251, 212, 109, 0.4); }
+        .btn-accent { background: var(--accent); box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4); }
+
+        /* Login Screen & Teacher Credit */
+        #login-screen, #teacher-dashboard, #teacher-login-modal {
+            max-width: 500px;
+            margin: 50px auto;
+            text-align: center;
+        }
+        #teacher-dashboard {
+            max-width: 900px;
+        }
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid rgba(255,255,255,0.8);
+            border-radius: 16px;
+            font-size: 1.1rem;
+            margin: 20px 0;
+            background: rgba(255,255,255,0.5);
+            outline: none;
+            transition: all 0.3s;
+        }
+        input:focus {
+            background: white;
+            border-color: var(--primary);
+            box-shadow: 0 0 15px rgba(79, 138, 139, 0.2);
+        }
+        
+        .teacher-credit-box {
+            margin-top: 30px;
+            padding: 15px;
+            background: rgba(255,255,255,0.4);
+            border-radius: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 15px;
+            text-align: left;
+        }
+        .teacher-credit-box img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid white;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .teacher-btn-small {
+            background: transparent;
+            color: #555;
+            border: 1px dashed #aaa;
+            padding: 8px 15px;
+            font-size: 0.8rem;
+            margin-top: 20px;
+            display: inline-block;
+        }
+
+        /* Dashboard Table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: rgba(255,255,255,0.5);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+        th {
+            background: var(--primary);
+            color: white;
+        }
+        tr:last-child td { border-bottom: none; }
+        .table-btn { padding: 5px 10px; font-size: 0.8rem; border-radius: 8px; }
+
+        /* Navigation */
+        .nav-menu {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 25px;
+        }
+        .nav-btn {
+            flex: 1;
+            min-width: 140px;
+            background: white;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+        .nav-btn.active {
+            background: var(--primary);
+            color: white;
+        }
+        .nav-btn.locked {
+            opacity: 0.5;
+            background: #eee;
+            border-color: #ccc;
+            color: #888;
+            cursor: pointer;
+        }
+        .nav-btn.locked::after {
+            content: ' 🔒';
+        }
+        
+        @keyframes pulseAlert {
+            0% { box-shadow: 0 0 0 0 rgba(255, 107, 107, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(255, 107, 107, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 107, 107, 0); }
+        }
+        .highlight-btn {
+            animation: pulseAlert 2s infinite;
+            background: var(--accent) !important;
+            color: white !important;
+            border-color: var(--accent) !important;
+        }
+
+        /* Sections */
+        .section { display: none; animation: fadeIn 0.5s ease-in-out; }
+        .section.active { display: block; }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Tabs Content */
+        .tabs { display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 2px solid rgba(0,0,0,0.1); padding-bottom: 10px; }
+        .tab-btn { background: transparent; color: #555; box-shadow: none; border-radius: 12px; }
+        .tab-btn.active { background: var(--secondary); color: #333; }
+        .tab-content { display: none; padding: 20px; background: rgba(255,255,255,0.7); border-radius: 16px; }
+        .tab-content.active { display: block; }
+        .tab-content h3 { color: var(--primary); margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
+        .tab-content img.icon { width: 40px; }
+        
+        /* Quiz */
+        .quiz-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; font-weight: bold; }
+        .timer { font-size: 1.2rem; color: var(--accent); background: rgba(255,107,107,0.1); padding: 5px 15px; border-radius: 20px; }
+        .question-box { font-size: 1.2rem; margin-bottom: 20px; min-height: 60px; }
+        .options-grid { display: grid; grid-template-columns: 1fr; gap: 10px; }
+        .option-btn { background: white; color: #333; text-align: left; padding: 15px; border: 2px solid transparent; }
+        .option-btn:hover { border-color: var(--secondary); background: #fdfaf0; }
+
+        /* Game */
+        .game-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px; }
+        .game-col { display: flex; flex-direction: column; gap: 10px; }
+        .game-item { 
+            background: white; padding: 15px; border-radius: 12px; cursor: pointer; text-align: center;
+            border: 2px solid transparent; transition: all 0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        .game-item.selected { border-color: var(--primary); background: #e6f3f3; transform: scale(1.05); }
+        .game-item.matched { background: #d4edda; color: #155724; border-color: #c3e6cb; cursor: default; opacity: 0.7; }
+        .game-item.wrong { animation: shake 0.5s; border-color: var(--accent); background: #ffe6e6; }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        /* Custom Modal Alert */
+        #custom-modal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5); z-index: 1000;
+            display: none; align-items: center; justify-content: center;
+            backdrop-filter: blur(5px);
+        }
+        .modal-content {
+            background: white; padding: 30px; border-radius: 20px; text-align: center;
+            max-width: 400px; width: 90%; box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            animation: fadeIn 0.3s;
+        }
+
+        /* Utilities */
+        .hidden { display: none !important; }
+        .user-info-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; background: rgba(255,255,255,0.5); padding: 10px 20px; border-radius: 16px; }
+        
+        @media (max-width: 600px) {
+            .nav-menu { flex-direction: column; }
+            .game-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="cloud cloud1"></div>
+    <div class="cloud cloud2"></div>
+
+    <div class="container">
+        <!-- หน้า Login สำหรับนักเรียน -->
+        <div id="login-screen" class="glass-card sweep-effect">
+            <header>
+                <div class="badge">บทเรียนออนไลน์ทบทวน</div>
+                <h1>การหมุนเวียนของอากาศบนโลก</h1>
+                <h2>ระดับชั้น ม.5 | วิชาโลกดาราศาสตร์และอวกาศ</h2>
+            </header>
+            <p>ยินดีต้อนรับ! กรุณากรอกชื่อ-นามสกุลเพื่อเข้าสู่บทเรียน</p>
+            <input type="text" id="student-name" placeholder="ชื่อ - นามสกุล" onkeypress="handleLoginKey(event)">
+            <button onclick="login()" style="width:100%">เข้าสู่บทเรียน 🚀</button>
+            
+            <div class="teacher-credit-box">
+                <!-- อัปเดต URL รูปภาพและเพิ่ม referrerpolicy="no-referrer" เพื่อแก้ปัญหารูปไม่แสดง -->
+                <img src="https://i.postimg.cc/cHZ6YWt4/Untitled-design-2.png" alt="ครูพี่นัท" referrerpolicy="no-referrer" onerror="this.src='https://cdn-icons-png.flaticon.com/512/194/194936.png'">
+                <div>
+                    <span style="font-size: 0.9rem; color: #555;">จัดทำโดย</span><br>
+                    <strong style="color: var(--primary); font-size: 1.1rem;">ครูพี่นัท</strong>
+                </div>
+            </div>
+            
+            <div style="margin-top: 15px;">
+                <button class="teacher-btn-small" onclick="showTeacherLoginModal()">👩‍🏫 ระบบสำหรับครู (หลังบ้าน)</button>
+            </div>
+        </div>
+
+        <!-- หน้า Login สำหรับครู Modal -->
+        <div id="teacher-login-modal" class="glass-card hidden">
+            <h2>👩‍🏫 เข้าสู่ระบบสำหรับครู</h2>
+            <p>กรุณากรอกรหัสผ่าน (ค่าเริ่มต้น:241356)</p>
+            <input type="password" id="teacher-pin" placeholder="รหัสผ่าน">
+            <div style="display:flex; gap:10px; margin-top:20px;">
+                <button class="btn-secondary" onclick="hideTeacherLoginModal()" style="flex:1">ยกเลิก</button>
+                <button onclick="loginTeacher()" style="flex:1">เข้าสู่ระบบ</button>
+            </div>
+        </div>
+
+        <!-- หน้า Dashboard สำหรับครู -->
+        <div id="teacher-dashboard" class="glass-card hidden">
+            <h2>📊 สถิติผู้เรียน (Dashboard)</h2>
+            <p style="margin-bottom: 20px;">บทเรียน: การหมุนเวียนของอากาศบนโลก</p>
+            
+            <div style="overflow-x: auto;">
+                <table id="students-table">
+                    <thead>
+                        <tr>
+                            <th>ลำดับ</th>
+                            <th>ชื่อ-สกุล</th>
+                            <th>ก่อนเรียน</th>
+                            <th>หลังเรียน</th>
+                            <th>พัฒนาการ</th>
+                            <th>จัดการ</th>
+                        </tr>
+                    </thead>
+                    <tbody id="students-table-body">
+                        <!-- Data will be injected here -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <div style="margin-top: 30px; display: flex; justify-content: space-between;">
+                <button class="btn-accent" onclick="clearAllData()">🗑 ล้างข้อมูลผู้เรียนทั้งหมด</button>
+                <button class="btn-secondary" onclick="logoutTeacher()">ออกจากระบบ 🚪</button>
+            </div>
+        </div>
+
+        <!-- แอปหลักสำหรับนักเรียน -->
+        <div id="main-app" class="hidden">
+            <header>
+                <h1>การหมุนเวียนของอากาศบนโลก</h1>
+                <h2>ม.5 | โลกดาราศาสตร์และอวกาศ</h2>
+            </header>
+
+            <div class="user-info-bar glass-card" style="padding: 10px 20px; margin-bottom: 20px;">
+                <div style="font-weight: 600;">👨‍🎓 ผู้เรียน: <span id="display-name" style="color: var(--primary);"></span></div>
+                <button class="btn-accent" style="padding: 8px 15px; font-size: 0.9rem;" onclick="logout()">ออกจากระบบ</button>
+            </div>
+
+            <!-- Navigation -->
+            <div class="nav-menu">
+                <button class="nav-btn active" id="nav-pre" onclick="switchSection('pre-test-section', this)">ก่อนเรียน</button>
+                <button class="nav-btn locked" id="nav-content" onclick="checkUnlockAndSwitch('content-section', this)">เนื้อหา</button>
+                <button class="nav-btn locked" id="nav-game" onclick="checkUnlockAndSwitch('game-section', this)">เกมทบทวน</button>
+                <button class="nav-btn locked" id="nav-post" onclick="checkUnlockAndSwitch('post-test-section', this)">หลังเรียน</button>
+                <button class="nav-btn locked" id="nav-result" onclick="checkUnlockAndSwitch('result-section', this)">ผลคะแนน</button>
+            </div>
+
+            <!-- Section 1: Pre-test -->
+            <div id="pre-test-section" class="section active glass-card sweep-effect">
+                <div id="pre-intro">
+                    <h2>📝 แบบทดสอบก่อนเรียน</h2>
+                    <p style="margin: 15px 0;">จำนวน 15 ข้อ | มีเวลาข้อละ 20 วินาที</p>
+                    <p style="color: var(--accent); font-weight: bold; margin-bottom: 20px;">
+                        ⚠️ ต้องทำแบบทดสอบนี้ให้เสร็จก่อน จึงจะสามารถเปิดดูเนื้อหาและส่วนอื่นๆ ได้
+                    </p>
+                    <button onclick="startQuiz('pre')">เริ่มทำแบบทดสอบ ⏳</button>
+                </div>
+                <div id="pre-quiz" class="hidden">
+                    <div class="quiz-header">
+                        <span id="pre-q-num">ข้อ 1/15</span>
+                        <span class="timer">⏱ <span id="pre-time">20</span>s</span>
+                    </div>
+                    <div class="question-box" id="pre-question">คำถาม?</div>
+                    <div class="options-grid" id="pre-options"></div>
+                </div>
+            </div>
+
+            <!-- Section 2: Content -->
+            <div id="content-section" class="section glass-card sweep-effect">
+                <div class="tabs">
+                    <button class="tab-btn active" onclick="switchTab('tab1', this)">ปัจจัยการเกิดลม</button>
+                    <button class="tab-btn" onclick="switchTab('tab2', this)">แบบจำลองการหมุนเวียนอากาศ</button>
+                </div>
+                
+                <div id="tab1" class="tab-content active">
+                    <h3>🌬️ ปัจจัยการเกิดลม (Wind Factors)</h3>
+                    <p>ลมเกิดจากการเคลื่อนที่ของอากาศจากบริเวณที่มีความกดอากาศสูงไปยังบริเวณที่มีความกดอากาศต่ำ ปัจจัยหลักที่ส่งผลต่อการเกิดลมและทิศทางลมบนโลก มีดังนี้:</p>
+                    <ul style="margin-top: 15px; padding-left: 20px; line-height: 1.8;">
+                        <li><strong>1. แรงความกดอากาศ (Pressure Gradient Force):</strong> อากาศจะเคลื่อนจากความกดอากาศสูง (H) ไปต่ำ (L) เสมอ</li>
+                        <li><strong>2. แรงคอริออลิส (Coriolis Force):</strong> เกิดจากการหมุนรอบตัวเองของโลก ทำให้ทิศทางลมเบนไปจากเดิม (ซีกโลกเหนือเบนขวา ซีกโลกใต้เบนซ้าย) แรงนี้จะมากที่สุดที่ขั้วโลก และเป็นศูนย์ที่เส้นศูนย์สูตร</li>
+                        <li><strong>3. แรงเสียดทาน (Friction Force):</strong> เกิดจากความขรุขระของพื้นผิวโลก ทำให้ลมพัดช้าลง และส่งผลให้แรงคอริออลิสลดลงด้วย (มีผลมากในระดับใกล้พื้นดิน)</li>
+                    </ul>
+                </div>
+                
+                <div id="tab2" class="tab-content">
+                    <h3>🌍 แบบจำลองการหมุนเวียนอากาศของโลก</h3>
+                    <p>การหมุนเวียนอากาศแบบ 3 เซลล์ (Three-Cell Model) เป็นแบบจำลองที่อธิบายการเคลื่อนที่ของอากาศในแต่ละซีกโลก:</p>
+                    <div style="margin-top: 15px; display: grid; gap: 15px;">
+                        <div style="background: rgba(255,255,255,0.8); padding: 15px; border-radius: 12px; border-left: 5px solid #FF6B6B;">
+                            <strong>1. แฮดลีย์เซลล์ (Hadley Cell) [0° - 30°]</strong><br>
+                            อากาศร้อนบริเวณเส้นศูนย์สูตรยกตัวขึ้น และไปจมตัวลงที่ละติจูด 30° ทำให้เกิด <em>ลมค้า (Trade Winds)</em> พัดเข้าหาศูนย์สูตร
+                        </div>
+                        <div style="background: rgba(255,255,255,0.8); padding: 15px; border-radius: 12px; border-left: 5px solid #FBD46D;">
+                            <strong>2. เฟอร์เรลเซลล์ (Ferrel Cell) [30° - 60°]</strong><br>
+                            การหมุนเวียนที่เกิดจากการผลักดันของเซลล์ข้างเคียง ทำให้เกิด <em>ลมฝ่ายตะวันตก (Westerlies)</em> พัดจากละติจูด 30° ไปยัง 60°
+                        </div>
+                        <div style="background: rgba(255,255,255,0.8); padding: 15px; border-radius: 12px; border-left: 5px solid #4F8A8B;">
+                            <strong>3. โพลาร์เซลล์ (Polar Cell) [60° - 90°]</strong><br>
+                            อากาศเย็นจัดที่ขั้วโลกจมตัวลงและพัดมายังละติจูด 60° (เกิดแนวปะทะอากาศขั้วโลก) ทำให้เกิด <em>ลมฝ่ายตะวันออก (Polar Easterlies)</em>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 3: Game -->
+            <div id="game-section" class="section glass-card sweep-effect">
+                <h2>🎮 เกมจับคู่: ความรู้เรื่องลม</h2>
+                <p>คลิกเลือกคำศัพท์ฝั่งซ้ายให้ตรงกับความหมายฝั่งขวา</p>
+                <div class="game-grid">
+                    <div class="game-col" id="game-terms"></div>
+                    <div class="game-col" id="game-defs"></div>
+                </div>
+                <div style="text-align: center; margin-top: 20px;">
+                    <button onclick="initGame()" class="btn-secondary">เริ่มเล่นใหม่ 🔄</button>
+                </div>
+            </div>
+
+            <!-- Section 4: Post-test -->
+            <div id="post-test-section" class="section glass-card sweep-effect">
+                 <div id="post-intro">
+                    <h2>📝 แบบทดสอบหลังเรียน</h2>
+                    <p style="margin: 15px 0;">จำนวน 15 ข้อ | มีเวลาข้อละ 20 วินาที</p>
+                    <button onclick="startQuiz('post')">เริ่มทำแบบทดสอบ ⏳</button>
+                </div>
+                <div id="post-quiz" class="hidden">
+                    <div class="quiz-header">
+                        <span id="post-q-num">ข้อ 1/15</span>
+                        <span class="timer">⏱ <span id="post-time">20</span>s</span>
+                    </div>
+                    <div class="question-box" id="post-question">คำถาม?</div>
+                    <div class="options-grid" id="post-options"></div>
+                </div>
+            </div>
+
+            <!-- Section 5: Results -->
+            <div id="result-section" class="section glass-card sweep-effect" style="text-align: center;">
+                <h2>🏆 สรุปผลการเรียนและพัฒนาการ</h2>
+                <div style="display: flex; justify-content: center; gap: 20px; margin: 30px 0; flex-wrap: wrap;">
+                    <div style="background: white; padding: 20px; border-radius: 20px; min-width: 150px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+                        <h3 style="color: #555;">ก่อนเรียน</h3>
+                        <div id="res-pre" style="font-size: 3rem; color: var(--accent); font-weight: 800;">-</div>
+                        <p>/ 15</p>
+                    </div>
+                    <div style="background: white; padding: 20px; border-radius: 20px; min-width: 150px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+                        <h3 style="color: #555;">หลังเรียน</h3>
+                        <div id="res-post" style="font-size: 3rem; color: var(--primary); font-weight: 800;">-</div>
+                        <p>/ 15</p>
+                    </div>
+                </div>
+                <div id="res-analysis" style="font-size: 1.2rem; margin-bottom: 20px; padding: 15px; background: rgba(255,255,255,0.6); border-radius: 12px;">
+                    กรุณาทำแบบทดสอบให้ครบเพื่อดูพัฒนาการ
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Custom Alert Modal -->
+    <div id="custom-modal">
+        <div class="modal-content">
+            <h3 id="modal-title" style="margin-bottom: 15px; color: var(--accent);">แจ้งเตือน</h3>
+            <p id="modal-message" style="margin-bottom: 20px;">ข้อความ</p>
+            <button onclick="closeModal()">ตกลง</button>
+        </dPGF
+    </div>
+
+    <script>
+        // --- DATA STRUCTURE ---
+        // questions data
+        const questionsDB = [
+            { q: "ลมเกิดขึ้นจากสาเหตุใดเป็นหลัก?", o: ["ความแตกต่างของความกดอากาศ แรง PGF", "ความแตกต่างของความชื้น", "แรงดึงดูดของโลก", "กระแสน้ำในมหาสมุทร"], a: 0 },
+            { q: "ทิศทางการพัดของลมบนพื้นผิวโลก เป็นอย่างไร?", o: ["พัดจากหย่อมความกดอากาศต่ำไปสูง", "พัดจากหย่อมความกดอากาศสูงไปต่ำ", "พัดจากแนวเหนือใต้เสมอ", "พัดจากตะวันออกไปตะวันตกเสมอ"], a: 1 },
+            { q: "แรงคอริออลิส (Coriolis Force) เกิดจากสิ่งใด?", o: ["แรงดึงดูดของดวงจันทร์", "การหมุนรอบตัวเองของโลก", "การโคจรรอบดวงอาทิตย์", "แรงเสียดทานของพื้นผิวโลก"], a: 1 },
+            { q: "แรงคอริออลิส ทำให้ลมในซีกโลกเหนือเบนไปทางใด?", o: ["เบนไปทางซ้าย", "เบนไปทางขวา", "ไม่เบนทิศทาง", "พัดขึ้นในแนวดิ่ง"], a: 1 },
+            { q: "บริเวณใดบนโลกที่มีแรงคอริออลิสเป็นศูนย์ (ไม่มีแรงนี้)?", o: ["ขั้วโลกเหนือ", "ขั้วโลกใต้", "เส้นศูนย์สูตร", "ละติจูด 30 องศา"], a: 2 },
+            { q: "แบบจำลองการหมุนเวียนอากาศแบบใดที่อยู่ระหว่างเส้นศูนย์สูตรถึงละติจูด 30 องศา?", o: ["Ferrel Cell", "Polar Cell", "Hadley Cell", "Walker Cell"], a: 2 },
+            { q: "ลมชนิดใดที่เกิดจากการหมุนเวียนแบบ Hadley Cell พัดเข้าหาเส้นศูนย์สูตร?", o: ["ลมค้า (Trade Winds)", "ลมฝ่ายตะวันตก", "ลมฝ่ายตะวันออก", "ลมมรสุม"], a: 0 },
+            { q: "บริเวณความกดอากาศต่ำแถบศูนย์สูตร (ITCZ) มีลักษณะอากาศเป็นอย่างไร?", o: ["ฟ้าโปร่ง แห้งแล้ง", "ฝนตกชุก มีเมฆมาก", "มีหิมะตกตลอดปี", "ลมพัดแรงจัดตลอดเวลา"], a: 1 },
+            { q: "พื้นที่ทะเลทรายส่วนใหญ่ของโลก มักพบในบริเวณละติจูดใด?", o: ["0 องศา (เส้นศูนย์สูตร)", "30 องศา", "60 องศา", "90 องศา (ขั้วโลก)"], a: 1 },
+            { q: "การหมุนเวียนอากาศแบบ Ferrel Cell อยู่ในช่วงละติจูดใด?", o: ["0 - 30 องศา", "30 - 60 องศา", "60 - 90 องศา", "90 - 120 องศา"], a: 1 },
+            { q: "ลมฝ่ายตะวันตก (Westerlies) เป็นผลมาจากการหมุนเวียนอากาศในเซลล์ใด?", o: ["Hadley Cell", "Ferrel Cell", "Polar Cell", "Equatorial Cell"], a: 1 },
+            { q: "มวลอากาศเย็นจัดที่จมตัวลงบริเวณขั้วโลก ก่อให้เกิดเซลล์การหมุนเวียนใด?", o: ["Polar Cell", "Ferrel Cell", "Hadley Cell", "Coriolis Cell"], a: 0 },
+            { q: "ลมที่พัดจากขั้วโลกมายังละติจูด 60 องศา เรียกว่าอะไร?", o: ["ลมค้า", "ลมฝ่ายตะวันตก", "ลมฝ่ายตะวันออก (Polar Easterlies)", "ลมมรสุมตะวันตกเฉียงใต้"], a: 2 },
+            { q: "แรงเสียดทาน (Friction) มีผลต่อความเร็วลมอย่างไร?", o: ["ทำให้ลมพัดเร็วขึ้น", "ทำให้ลมพัดช้าลง", "ไม่มีผลต่อความเร็วลม", "ทำให้ลมเปลี่ยนเป็นพายุ"], a: 1 },
+            { q: "บริเวณแนวปะทะอากาศขั้วโลก (Polar Front) มักเกิดสภาพอากาศแบบใด?", o: ["ท้องฟ้าแจ่มใส ลมสงบ", "อากาศแห้งแล้ง ไม่มีเมฆ", "มีการก่อตัวของเมฆและพายุ", "อากาศร้อนจัด ทะเลทราย"], a: 2 }
+        ];
+
+        const gameData = [
+            { id: 1, term: "แรงคอริออลิส", def: "เกิดจากโลกหมุนรอบตัวเอง ทำให้ลมเบนทิศ" },
+            { id: 2, term: "ลมค้า (Trade Winds)", def: "พัดเข้าหาศูนย์สูตร (Hadley Cell)" },
+            { id: 3, term: "ITCZ", def: "ร่องความกดอากาศต่ำ บริเวณศูนย์สูตร ฝนตกชุก" },
+            { id: 4, term: "Ferrel Cell", def: "การหมุนเวียนช่วงละติจูด 30° ถึง 60°" },
+            { id: 5, term: "ลมฝ่ายตะวันตก", def: "พัดจากละติจูด 30° ไป 60°" }
+        ];
+
+        // System State
+        let allStudents = [];
+        let currentUser = null;
+        
+        let currentQuiz = ''; // 'pre' or 'post'
+        let qIndex = 0;
+        let score = 0;
+        let timer;
+        let timeLeft = 20;
+        let selectedQuestions = [];
+
+        // --- INIT & UTILS ---
+        window.onload = () => {
+            loadAllStudents();
+        }
+
+        function loadAllStudents() {
+            const data = localStorage.getItem('astro_students_data');
+            if (data) {
+                allStudents = JSON.parse(data);
+            }
+        }
+
+        function saveAllStudents() {
+            localStorage.setItem('astro_students_data', JSON.stringify(allStudents));
+        }
+
+        function showModal(title, msg) {
+            document.getElementById('modal-title').innerText = title;
+            document.getElementById('modal-message').innerText = msg;
+            document.getElementById('custom-modal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('custom-modal').style.display = 'none';
+        }
+
+        function shuffle(array) {
+            let currentIndex = array.length, randomIndex;
+            while (currentIndex != 0) {
+                randomIndex = Math.floor(Math.random() * currentIndex);
+                currentIndex--;
+                [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+            }
+            return array;
+        }
+
+        // --- AUTH ---
+        function handleLoginKey(e) {
+            if (e.key === 'Enter') login();
+        }
+
+        function login() {
+            const nameInput = document.getElementById('student-name').value.trim();
+            if (!nameInput) {
+                showModal('ข้อผิดพลาด', 'กรุณากรอกชื่อ-นามสกุลค่ะ/ครับ');
+                return;
+            }
+
+            // Find student or create new
+            let student = allStudents.find(s => s.name === nameInput);
+            if (!student) {
+                student = {
+                    name: nameInput,
+                    preScore: null,
+                    postScore: null,
+                    timestamp: new Date().getTime()
+                };
+                allStudents.push(student);
+                saveAllStudents();
+            }
+            
+            currentUser = student;
+            
+            // Setup UI
+            document.getElementById('login-screen').classList.add('hidden');
+            document.getElementById('main-app').classList.remove('hidden');
+            document.getElementById('display-name').innerText = currentUser.name;
+            
+            updateNavigationState();
+        }
+
+        function logout() {
+            currentUser = null;
+            document.getElementById('student-name').value = '';
+            document.getElementById('main-app').classList.add('hidden');
+            document.getElementById('login-screen').classList.remove('hidden');
+            
+            // Reset views
+            document.getElementById('pre-intro').classList.remove('hidden');
+            document.getElementById('pre-quiz').classList.add('hidden');
+            document.getElementById('post-intro').classList.remove('hidden');
+            document.getElementById('post-quiz').classList.add('hidden');
+            clearInterval(timer);
+        }
+
+        // --- NAVIGATION ---
+        function updateNavigationState() {
+            const hasPre = currentUser.preScore !== null;
+            
+            const navs = ['nav-content', 'nav-game', 'nav-post', 'nav-result'];
+            navs.forEach(id => {
+                const el = document.getElementById(id);
+                if (hasPre) {
+                    el.classList.remove('locked');
+                } else {
+                    el.classList.add('locked');
+                }
+            });
+
+            // Highlight pre-test if not done
+            if (!hasPre) {
+                document.getElementById('nav-pre').classList.add('highlight-btn');
+                switchSection('pre-test-section', document.getElementById('nav-pre'));
+            } else {
+                document.getElementById('nav-pre').classList.remove('highlight-btn');
+                // Auto show results if both done, else show content
+                if (currentUser.postScore !== null) {
+                    switchSection('result-section', document.getElementById('nav-result'));
+                    updateResultView();
+                } else {
+                    switchSection('content-section', document.getElementById('nav-content'));
+                }
+            }
+        }
+
+        function checkUnlockAndSwitch(sectionId, btn) {
+            if (currentUser.preScore === null) {
+                showModal('แจ้งเตือน', 'กรุณาทำ "แบบทดสอบก่อนเรียน" ให้เสร็จก่อนนะคะ/ครับ เพื่อปลดล็อกเนื้อหาบทเรียน 🔒');
+                // Blink the pre-test button
+                const preBtn = document.getElementById('nav-pre');
+                preBtn.classList.add('highlight-btn');
+                setTimeout(() => preBtn.classList.remove('highlight-btn'), 2000);
+                return;
+            }
+            switchSection(sectionId, btn);
+            if (sectionId === 'game-section') initGame();
+            if (sectionId === 'result-section') updateResultView();
+        }
+
+        function switchSection(sectionId, btnElement) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            
+            document.getElementById(sectionId).classList.add('active');
+            if(btnElement) btnElement.classList.add('active');
+        }
+
+        function switchTab(tabId, btnElement) {
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            
+            document.getElementById(tabId).classList.add('active');
+            btnElement.classList.add('active');
+        }
+
+        // --- QUIZ SYSTEM ---
+        function startQuiz(type) {
+            currentQuiz = type;
+            qIndex = 0;
+            score = 0;
+            
+            // Prepare questions (deep copy)
+            selectedQuestions = JSON.parse(JSON.stringify(questionsDB));
+            
+            // If post-test, shuffle options
+            if (type === 'post') {
+                selectedQuestions.forEach(q => {
+                    const originalAnsText = q.o[q.a];
+                    shuffle(q.o);
+                    q.a = q.o.indexOf(originalAnsText);
+                });
+            }
+
+            document.getElementById(`${type}-intro`).classList.add('hidden');
+            document.getElementById(`${type}-quiz`).classList.remove('hidden');
+            
+            showQuestion();
+        }
+
+        function showQuestion() {
+            if (qIndex >= selectedQuestions.length) {
+                endQuiz();
+                return;
+            }
+
+            const q = selectedQuestions[qIndex];
+            document.getElementById(`${currentQuiz}-q-num`).innerText = `ข้อ ${qIndex + 1}/15`;
+            document.getElementById(`${currentQuiz}-question`).innerText = q.q;
+            
+            const optionsDiv = document.getElementById(`${currentQuiz}-options`);
+            optionsDiv.innerHTML = '';
+            
+            q.o.forEach((optText, idx) => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.innerText = optText;
+                btn.onclick = () => selectAnswer(idx);
+                optionsDiv.appendChild(btn);
+            });
+
+            startTimer();
+        }
+
+        function startTimer() {
+            clearInterval(timer);
+            timeLeft = 20;
+            document.getElementById(`${currentQuiz}-time`).innerText = timeLeft;
+            
+            timer = setInterval(() => {
+                timeLeft--;
+                document.getElementById(`${currentQuiz}-time`).innerText = timeLeft;
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    selectAnswer(-1); // Timeout = wrong
+                }
+            }, 1000);
+        }
+
+        function selectAnswer(ansIdx) {
+            clearInterval(timer);
+            
+            if (ansIdx === selectedQuestions[qIndex].a) {
+                score++;
+            }
+            
+            qIndex++;
+            showQuestion();
+        }
+
+        function endQuiz() {
+            document.getElementById(`${currentQuiz}-quiz`).classList.add('hidden');
+            document.getElementById(`${currentQuiz}-intro`).classList.remove('hidden');
+            
+            if (currentQuiz === 'pre') {
+                currentUser.preScore = score;
+                showModal('เยี่ยมมาก!', `คุณทำแบบทดสอบก่อนเรียนได้ ${score}/15 คะแนน\n\nเนื้อหาบทเรียนถูกปลดล็อกแล้ว ไปศึกษาเนื้อหาและเล่นเกมกันเลย!`);
+            } else {
+                currentUser.postScore = score;
+                showModal('ยินดีด้วย!', `คุณทำแบบทดสอบหลังเรียนเสร็จแล้ว!\nไปดูผลการเรียนของคุณกันเลย`);
+            }
+            
+            // Update storage
+            const idx = allStudents.findIndex(s => s.name === currentUser.name);
+            if(idx > -1) allStudents[idx] = currentUser;
+            saveAllStudents();
+            
+            updateNavigationState();
+        }
+
+        function updateResultView() {
+            const pre = currentUser.preScore;
+            const post = currentUser.postScore;
+            
+            document.getElementById('res-pre').innerText = pre !== null ? pre : '-';
+            document.getElementById('res-post').innerText = post !== null ? post : '-';
+            
+            const analysisDiv = document.getElementById('res-analysis');
+            
+            if (pre === null || post === null) {
+                analysisDiv.innerHTML = "<em>กรุณาทำแบบทดสอบให้ครบทั้งก่อนเรียนและหลังเรียน เพื่อดูพัฒนาการค่ะ</em>";
+                analysisDiv.style.background = "rgba(255,255,255,0.6)";
+            } else {
+                const diff = post - pre;
+                let msg = "";
+                let color = "";
+                
+                if (diff > 0) {
+                    msg = `🌟 ยอดเยี่ยมมาก! คะแนนคุณเพิ่มขึ้น ${diff} คะแนน ระดับคุณภาพ: <strong>ดีมาก</strong>`;
+                    color = "#d4edda";
+                } else if (diff === 0) {
+                    msg = `👍 เก่งมาก! คะแนนคงที่ ระดับคุณภาพ: <strong>ดี</strong> พยายามทบทวนอีกนิดนะ`;
+                    color = "#fff3cd";
+                } else {
+                    msg = `💪 ไม่เป็นไรนะ! คะแนนลดลง ${Math.abs(diff)} คะแนน ระดับคุณภาพ: <strong>ต้องพยายามอีกนิด</strong> ลองกลับไปอ่านเนื้อหาอีกครั้งนะ`;
+                    color = "#f8d7da";
+                }
+                
+                analysisDiv.innerHTML = msg;
+                analysisDiv.style.background = color;
+            }
+        }
+
+        // --- GAME SYSTEM ---
+        let selectedTerm = null;
+        let selectedDef = null;
+        let matchedCount = 0;
+
+        function initGame() {
+            const termsCol = document.getElementById('game-terms');
+            const defsCol = document.getElementById('game-defs');
+            termsCol.innerHTML = '';
+            defsCol.innerHTML = '';
+            
+            matchedCount = 0;
+            selectedTerm = null;
+            selectedDef = null;
+
+            const terms = shuffle([...gameData]);
+            const defs = shuffle([...gameData]);
+
+            terms.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'game-item term';
+                div.innerText = item.term;
+                div.dataset.id = item.id;
+                div.onclick = () => selectGameItem(div, 'term');
+                termsCol.appendChild(div);
+            });
+
+            defs.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'game-item def';
+                div.innerText = item.def;
+                div.dataset.id = item.id;
+                div.onclick = () => selectGameItem(div, 'def');
+                defsCol.appendChild(div);
+            });
+        }
+
+        function selectGameItem(el, type) {
+            if (el.classList.contains('matched')) return;
+
+            // Deselect others of same type
+            document.querySelectorAll(`.game-item.${type}`).forEach(d => {
+                if(!d.classList.contains('matched')) d.classList.remove('selected')
+            });
+            
+            el.classList.add('selected');
+
+            if (type === 'term') selectedTerm = el;
+            else selectedDef = el;
+
+            checkMatch();
+        }
+
+        function checkMatch() {
+            if (selectedTerm && selectedDef) {
+                const id1 = selectedTerm.dataset.id;
+                const id2 = selectedDef.dataset.id;
+
+                if (id1 === id2) {
+                    // Match
+                    selectedTerm.classList.remove('selected');
+                    selectedDef.classList.remove('selected');
+                    selectedTerm.classList.add('matched');
+                    selectedDef.classList.add('matched');
+                    matchedCount++;
+                    
+                    if (matchedCount === gameData.length) {
+                        setTimeout(() => showModal('เก่งมาก!', 'คุณจับคู่คำศัพท์ได้ถูกต้องทั้งหมด! 🎉'), 500);
+                    }
+                } else {
+                    // Wrong
+                    const t = selectedTerm;
+                    const d = selectedDef;
+                    t.classList.add('wrong');
+                    d.classList.add('wrong');
+                    
+                    setTimeout(() => {
+                        t.classList.remove('selected', 'wrong');
+                        d.classList.remove('selected', 'wrong');
+                    }, 500);
+                }
+                selectedTerm = null;
+                selectedDef = null;
+            }
+        }
+
+        // --- TEACHER SYSTEM ---
+        const TEACHER_PASSWORD = "1234";
+
+        function showTeacherLoginModal() {
+            document.getElementById('teacher-login-modal').classList.remove('hidden');
+            document.getElementById('login-screen').classList.add('hidden');
+            document.getElementById('teacher-pin').value = '';
+        }
+
+        function hideTeacherLoginModal() {
+            document.getElementById('teacher-login-modal').classList.add('hidden');
+            document.getElementById('login-screen').classList.remove('hidden');
+        }
+
+        function loginTeacher() {
+            const pin = document.getElementById('teacher-pin').value;
+            if (pin === TEACHER_PASSWORD) {
+                document.getElementById('teacher-login-modal').classList.add('hidden');
+                document.getElementById('teacher-dashboard').classList.remove('hidden');
+                renderTeacherDashboard();
+            } else {
+                alert('รหัสผ่านไม่ถูกต้อง (ค่าเริ่มต้นคือ 1234)');
+            }
+        }
+
+        function logoutTeacher() {
+            document.getElementById('teacher-dashboard').classList.add('hidden');
+            document.getElementById('login-screen').classList.remove('hidden');
+        }
+
+        function renderTeacherDashboard() {
+            const tbody = document.getElementById('students-table-body');
+            tbody.innerHTML = '';
+
+            if (allStudents.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">ยังไม่มีข้อมูลผู้เรียน</td></tr>';
+                return;
+            }
+
+            // Sort by timestamp newest first
+            const sortedStudents = [...allStudents].sort((a,b) => b.timestamp - a.timestamp);
+
+            sortedStudents.forEach((s, index) => {
+                const tr = document.createElement('tr');
+                
+                const pre = s.preScore !== null ? s.preScore : '-';
+                const post = s.postScore !== null ? s.postScore : '-';
+                
+                let dev = '-';
+                if (s.preScore !== null && s.postScore !== null) {
+                    const diff = s.postScore - s.preScore;
+                    if (diff > 0) dev = `<span style="color:green">▲ +${diff}</span>`;
+                    else if (diff < 0) dev = `<span style="color:red">▼ ${diff}</span>`;
+                    else dev = `<span style="color:gray">= 0</span>`;
+                }
+
+                tr.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td><strong>${s.name}</strong></td>
+                    <td>${pre}/15</td>
+                    <td>${post}/15</td>
+                    <td>${dev}</td>
+                    <td><button class="table-btn btn-accent" onclick="deleteStudent('${s.name}')">ลบ</button></td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function deleteStudent(name) {
+            if (confirm(`คุณแน่ใจหรือไม่ว่าจะลบข้อมูลของ ${name}?`)) {
+                allStudents = allStudents.filter(s => s.name !== name);
+                saveAllStudents();
+                renderTeacherDashboard();
+            }
+        }
+
+        function clearAllData() {
+            if (confirm('คุณแน่ใจหรือไม่ว่าจะลบข้อมูลผู้เรียน "ทั้งหมด"? (ไม่สามารถกู้คืนได้)')) {
+                allStudents = [];
+                saveAllStudents();
+                renderTeacherDashboard();
+            }
+        }
+    </script>
+</body>
+</html>
