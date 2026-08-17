@@ -372,7 +372,7 @@
         <!-- หน้า Login สำหรับครู Modal -->
         <div id="teacher-login-modal" class="glass-card hidden">
             <h2>👩‍🏫 เข้าสู่ระบบสำหรับครู</h2>
-            <p>กรุณากรอกรหัสผ่าน (ค่าเริ่มต้น:241356)</p>
+            <p>กรุณากรอกรหัสผ่าน </p>
             <input type="password" id="teacher-pin" placeholder="รหัสผ่าน">
             <div style="display:flex; gap:10px; margin-top:20px;">
                 <button class="btn-secondary" onclick="hideTeacherLoginModal()" style="flex:1">ยกเลิก</button>
@@ -948,7 +948,7 @@
         }
 
         // --- TEACHER SYSTEM ---
-        const TEACHER_PASSWORD = "1234";
+        const TEACHER_PASSWORD = "N241356";
 
         function showTeacherLoginModal() {
             document.getElementById('teacher-login-modal').classList.remove('hidden');
@@ -968,7 +968,7 @@
                 document.getElementById('teacher-dashboard').classList.remove('hidden');
                 renderTeacherDashboard();
             } else {
-                alert('รหัสผ่านไม่ถูกต้อง (ค่าเริ่มต้นคือ 1234)');
+                alert('รหัสผ่านไม่ถูกต้อง');
             }
         }
 
