@@ -286,10 +286,11 @@
         .tabs { display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 2px solid rgba(0,0,0,0.1); padding-bottom: 10px; }
         .tab-btn { background: transparent; color: #555; box-shadow: none; border-radius: 12px; }
         .tab-btn.active { background: var(--secondary); color: #333; }
-        .tab-content { display: none; padding: 20px; background: rgba(255,255,255,0.7); border-radius: 16px; }
+        .tab-content { display: none; padding: 20px; background: rgba(255,255,255,0.7); border-radius: 16px; line-height: 1.6; }
         .tab-content.active { display: block; }
         .tab-content h3 { color: var(--primary); margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
-        .tab-content img.icon { width: 40px; }
+        .content-box { background: rgba(255,255,255,0.8); padding: 15px; border-radius: 12px; margin-bottom: 15px; }
+        .content-img { width: 100%; max-width: 600px; height: auto; border-radius: 12px; display: block; margin: 20px auto; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
         
         /* Quiz */
         .quiz-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; font-weight: bold; }
@@ -347,7 +348,7 @@
         <!-- หน้า Login สำหรับนักเรียน -->
         <div id="login-screen" class="glass-card sweep-effect">
             <header>
-                <div class="badge">บทเรียนออนไลน์ทบทวน</div>
+                <div class="badge">บทเรียนออนไลน์</div>
                 <h1>การหมุนเวียนของอากาศบนโลก</h1>
                 <h2>ระดับชั้น ม.5 | วิชาโลกดาราศาสตร์และอวกาศ</h2>
             </header>
@@ -356,8 +357,8 @@
             <button onclick="login()" style="width:100%">เข้าสู่บทเรียน 🚀</button>
             
             <div class="teacher-credit-box">
-                <!-- อัปเดต URL รูปภาพและเพิ่ม referrerpolicy="no-referrer" เพื่อแก้ปัญหารูปไม่แสดง -->
-                <img src="https://i.postimg.cc/cHZ6YWt4/Untitled-design-2.png" alt="ครูพี่นัท" referrerpolicy="no-referrer" onerror="this.src='https://cdn-icons-png.flaticon.com/512/194/194936.png'">
+                <!-- รูปภาพป้องกัน Hotlink protection -->
+                <img src="https://img1.pic.in.th/images/1000104349.png" referrerpolicy="no-referrer" alt="ครูพี่นัท" onerror="this.src='https://cdn-icons-png.flaticon.com/512/194/194936.png'">
                 <div>
                     <span style="font-size: 0.9rem; color: #555;">จัดทำโดย</span><br>
                     <strong style="color: var(--primary); font-size: 1.1rem;">ครูพี่นัท</strong>
@@ -382,8 +383,8 @@
 
         <!-- หน้า Dashboard สำหรับครู -->
         <div id="teacher-dashboard" class="glass-card hidden">
-            <h2>📊 สถิติผู้เรียน (Dashboard)</h2>
-            <p style="margin-bottom: 20px;">บทเรียน: การหมุนเวียนของอากาศบนโลก</p>
+            <h2>📊 สถิติผู้เรียน (Local Dashboard)</h2>
+            <p style="margin-bottom: 20px;">(แสดงผลเฉพาะผู้เรียนที่ใช้เครื่องนี้ หากต้องการดูข้อมูลทั้งหมดให้เปิดใน Google Sheets)</p>
             
             <div style="overflow-x: auto;">
                 <table id="students-table">
@@ -404,7 +405,7 @@
             </div>
             
             <div style="margin-top: 30px; display: flex; justify-content: space-between;">
-                <button class="btn-accent" onclick="clearAllData()">🗑 ล้างข้อมูลผู้เรียนทั้งหมด</button>
+                <button class="btn-accent" onclick="clearAllData()">🗑 ล้างข้อมูลเครื่องนี้</button>
                 <button class="btn-secondary" onclick="logoutTeacher()">ออกจากระบบ 🚪</button>
             </div>
         </div>
@@ -457,85 +458,117 @@
                     <button class="tab-btn" onclick="switchTab('tab2', this)">แบบจำลองการหมุนเวียนอากาศ</button>
                 </div>
                 
+                <!-- แท็บ 1 -->
                 <div id="tab1" class="tab-content active">
-                    <h3>🌬️ ปัจจัยการเกิดลม (Wind Factors)</h3>
+                    <h3 style="font-size: 1.5rem; color: #333;">🌬️ "ปัจจัยการเกิดลม"</h3>
+                    <p style="margin-bottom: 15px;">เกิดจากอิทธิพลของแรงหลัก 4 ชนิด ดังนี้</p>
                     
-                    <img src="https://i.postimg.cc/HLgPHvJD/p-cc-yth-thahi-ke-dlm.png" alt="ปัจจัยการเกิดลม" referrerpolicy="no-referrer" style="width: 100%; max-width: 600px; display: block; margin: 20px auto; border-radius: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
-                    
-                    <p style="margin-bottom: 15px; font-size: 1.1rem;"><strong>"ปัจจัยการเกิดลม"</strong> เกิดจากอิทธิพลของแรงหลัก 4 ชนิด ดังนี้</p>
-                    
-                    <div style="display: grid; gap: 15px;">
-                        <div style="background: rgba(255,255,255,0.8); padding: 15px; border-radius: 12px; border-left: 5px solid #4F8A8B;">
-                            <strong style="color: var(--primary); font-size: 1.1rem;">1. แรงที่เกิดจากความชันของความกดอากาศ (Pressure Gradient Force)</strong><br>
-                            <span style="color: #555;">เป็นแรงที่มีผลต่อ <strong>"ความเร็ว"</strong> ในการเคลื่อนที่ของลม</span>
-                            <ul style="margin-top: 10px; margin-left: 20px; color: #444; line-height: 1.6;">
-                                <li><strong>หลักการ:</strong> ยิ่ง 2 บริเวณมีความกดอากาศแตกต่างกันมากเท่าไหร่ ความชันของความกดอากาศก็จะยิ่งมาก ส่งผลให้เกิดลมพัดแรงขึ้น</li>
-                                <li><strong>ตัวอย่างในชีวิตจริง:</strong>
-                                    <ul style="margin-left: 20px; list-style-type: circle;">
-                                        <li><em>ลมบก-ลมทะเล:</em> ในตอนกลางวัน พื้นดินจะร้อนกว่าพื้นน้ำ ทำให้ความกดอากาศบนฝั่งต่ำกว่า ลมจึงพัดจากทะเลเข้าหาฝั่ง</li>
-                                        <li><em>พายุไต้ฝุ่น:</em> บริเวณศูนย์กลางพายุมีความกดอากาศต่ำมาก ลมจึงพัดเข้าหาศูนย์กลางอย่างรุนแรง</li>
-                                        <li><em>มรสุม:</em> เกิดจากความแตกต่างของความกดอากาศระหว่างทวีปและมหาสมุทรตามฤดูกาล</li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </div>
-
-                        <div style="background: rgba(255,255,255,0.8); padding: 15px; border-radius: 12px; border-left: 5px solid #FF6B6B;">
-                            <strong style="color: var(--accent); font-size: 1.1rem;">2. แรงคอริออลิส (Coriolis Force)</strong><br>
-                            <span style="color: #555;">เป็นแรงที่ทำให้ลม <strong>"เปลี่ยนทิศทาง"</strong> (เกิดการเบี่ยงเบน) ซึ่งเป็นผลมาจากการที่โลกหมุนรอบตัวเอง</span>
-                            <ul style="margin-top: 10px; margin-left: 20px; color: #444; line-height: 1.6;">
-                                <li>หากโลกไม่หมุน ลมจะพัดเป็นเส้นตรงจากขั้วโลกมายังเส้นศูนย์สูตร แต่เพราะโลกหมุน ลมจึงเบี่ยงเบนออกไปจากแนวเส้นตรง</li>
-                                <li><strong>ลักษณะของแรง:</strong>
-                                    <ul style="margin-left: 20px; list-style-type: circle;">
-                                        <li>แปรผันตรงกับความเร็วลมและละติจูด</li>
-                                        <li>มีค่าเป็นศูนย์ (0) ที่บริเวณเส้นศูนย์สูตร และมีค่ามากที่สุดบริเวณขั้วโลก</li>
-                                        <li>แรงนี้จะทำมุมตั้งฉากกับการเคลื่อนที่ของอากาศเสมอ</li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </div>
-
-                        <div style="background: rgba(255,255,255,0.8); padding: 15px; border-radius: 12px; border-left: 5px solid #FBD46D;">
-                            <strong style="color: #d4a017; font-size: 1.1rem;">3. แรงเสียดทาน (Friction)</strong><br>
-                            <span style="color: #555;">เป็นแรงต้านที่ทำให้ <strong>"ความเร็วลมลดลง"</strong></span>
-                            <ul style="margin-top: 10px; margin-left: 20px; color: #444; line-height: 1.6;">
-                                <li>ลมที่พัดเหนือผิวน้ำ (มหาสมุทร) จะมีแรงเสียดทานน้อยกว่าลมที่พัดเหนือพื้นดิน (ทวีป)</li>
-                                <li>แรงเสียดทานจะมีผลมากกับอากาศที่อยู่ใกล้ผิวโลก ยิ่งอยู่ที่ระดับความสูงมากขึ้น แรงเสียดทานก็จะยิ่งลดลง</li>
-                            </ul>
-                        </div>
-
-                        <div style="background: rgba(255,255,255,0.8); padding: 15px; border-radius: 12px; border-left: 5px solid #9b59b6;">
-                            <strong style="color: #8e44ad; font-size: 1.1rem;">4. แรงสู่ศูนย์กลาง (Centripetal Force)</strong><br>
-                            <span style="color: #555;">เป็นแรงที่มีผลน้อยที่สุดต่อการเกิดลม แต่มีผลอย่างมากต่อ <strong>"การหมุน"</strong> ของลม</span>
-                            <ul style="margin-top: 10px; margin-left: 20px; color: #444; line-height: 1.6;">
-                                <li>ทิศทางของแรงนี้จะพุ่งเข้าหาจุดศูนย์กลางของการหมุนเสมอ</li>
-                                <li>ความเร็วในการหมุนจะแปรผกผันกับระยะทางจากจุดศูนย์กลาง</li>
-                            </ul>
-                        </div>
+                    <div class="content-box" style="border-left: 5px solid #FF6B6B;">
+                        <strong>1. แรงที่เกิดจากความชันของความกดอากาศ (Pressure Gradient Force)</strong><br>
+                        <ul>
+                            <li>เป็นแรงที่มีผลต่อ <strong>"ความเร็ว"</strong> ในการเคลื่อนที่ของลม</li>
+                            <li>หลักการคือ ยิ่ง 2 บริเวณมีความกดอากาศแตกต่างกันมากเท่าไหร่ ความชันของความกดอากาศก็จะยิ่งมาก ส่งผลให้เกิดลมพัดแรงขึ้น</li>
+                            <li><strong>ตัวอย่างในชีวิตจริง:</strong>
+                                <ul>
+                                    <li>ลมบก-ลมทะเล: ในตอนกลางวัน พื้นดินจะร้อนกว่าพื้นน้ำ ทำให้ความกดอากาศบนฝั่งต่ำกว่า ลมจึงพัดจากทะเลเข้าหาฝั่ง</li>
+                                    <li>พายุไต้ฝุ่น: บริเวณศูนย์กลางพายุมีความกดอากาศต่ำมาก ลมจึงพัดเข้าหาศูนย์กลางอย่างรุนแรง</li>
+                                    <li>มรสุม: เกิดจากความแตกต่างของความกดอากาศระหว่างทวีปและมหาสมุทรตามฤดูกาล</li>
+                                </ul>
+                            </li>
+                        </ul>
                     </div>
 
-                    <div style="margin-top: 20px; background: rgba(79, 138, 139, 0.15); padding: 15px; border-radius: 12px; text-align: center; color: var(--primary); font-size: 1.05rem;">
-                        <strong>💡 สรุป:</strong> ลมที่เราสัมผัสได้นั้นเกิดจากการทำงานร่วมกันของแรงทั้ง 4 ชนิดนี้ ความกดอากาศทำให้ลมเคลื่อนที่ โลกหมุนทำให้ลมเปลี่ยนทิศ พื้นผิวโลกทำให้ลมช้าลง และแรงสู่ศูนย์กลางทำให้ลมเกิดการหมุนวน
+                    <div class="content-box" style="border-left: 5px solid #4F8A8B;">
+                        <strong>2. แรงคอริออลิส (Coriolis Force)</strong><br>
+                        <ul>
+                            <li>เป็นแรงที่ทำให้ลม <strong>"เปลี่ยนทิศทาง"</strong> (เกิดการเบี่ยงเบน) ซึ่งเป็นผลมาจากการที่โลกหมุนรอบตัวเอง</li>
+                            <li>หากโลกไม่หมุน ลมจะพัดเป็นเส้นตรงจากขั้วโลกมายังเส้นศูนย์สูตร แต่เพราะโลกหมุน ลมจึงเบี่ยงเบนออกไปจากแนวเส้นตรง</li>
+                            <li><strong>ลักษณะของแรง:</strong>
+                                <ul>
+                                    <li>แปรผันตรงกับความเร็วลมและละติจูด</li>
+                                    <li>มีค่าเป็นศูนย์ (0) ที่บริเวณเส้นศูนย์สูตร และมีค่ามากที่สุดบริเวณขั้วโลก</li>
+                                    <li>แรงนี้จะทำมุมตั้งฉากกับการเคลื่อนที่ของอากาศเสมอ</li>
+                                </ul>
+                            </li>
+                        </ul>
                     </div>
+
+                    <div class="content-box" style="border-left: 5px solid #FBD46D;">
+                        <strong>3. แรงเสียดทาน (Friction)</strong><br>
+                        <ul>
+                            <li>เป็นแรงต้านที่ทำให้ <strong>"ความเร็วลมลดลง"</strong></li>
+                            <li>ลมที่พัดเหนือผิวน้ำ (มหาสมุทร) จะมีแรงเสียดทานน้อยกว่าลมที่พัดเหนือพื้นดิน (ทวีป)</li>
+                            <li>แรงเสียดทานจะมีผลมากกับอากาศที่อยู่ใกล้ผิวโลก ยิ่งอยู่ที่ระดับความสูงมากขึ้น แรงเสียดทานก็จะยิ่งลดลง</li>
+                        </ul>
+                    </div>
+
+                    <div class="content-box" style="border-left: 5px solid #9b59b6;">
+                        <strong>4. แรงสู่ศูนย์กลาง (Centripetal Force)</strong><br>
+                        <ul>
+                            <li>เป็นแรงที่มีผลน้อยที่สุดต่อการเกิดลม แต่มีผลอย่างมากต่อ <strong>"การหมุน"</strong> ของลม</li>
+                            <li>ทิศทางของแรงนี้จะพุ่งเข้าหาจุดศูนย์กลางของการหมุนเสมอ</li>
+                            <li>ความเร็วในการหมุนจะแปรผกผันกับระยะทางจากจุดศูนย์กลาง</li>
+                        </ul>
+                    </div>
+                    
+                    <p style="background: rgba(255,255,255,0.9); padding: 15px; border-radius: 12px; font-weight: bold; text-align: center; color: var(--primary);">
+                        💡 สรุปคือ ลมที่เราสัมผัสได้นั้นเกิดจากการทำงานร่วมกันของแรงทั้ง 4 ชนิดนี้ครับ ความกดอากาศทำให้ลมเคลื่อนที่ โลกหมุนทำให้ลมเปลี่ยนทิศ พื้นผิวโลกทำให้ลมช้าลง และแรงสู่ศูนย์กลางทำให้ลมเกิดการหมุนวนครับ
+                    </p>
+
+                    <img src="https://i.postimg.cc/HLgPHvJD/p-cc-yth-thahi-ke-dlm.png" class="content-img" referrerpolicy="no-referrer" alt="ปัจจัยการเกิดลม">
                 </div>
                 
+                <!-- แท็บ 2 -->
                 <div id="tab2" class="tab-content">
-                    <h3>🌍 แบบจำลองการหมุนเวียนอากาศของโลก</h3>
-                    <p>การหมุนเวียนอากาศแบบ 3 เซลล์ (Three-Cell Model) เป็นแบบจำลองที่อธิบายการเคลื่อนที่ของอากาศในแต่ละซีกโลก:</p>
-                    <div style="margin-top: 15px; display: grid; gap: 15px;">
-                        <div style="background: rgba(255,255,255,0.8); padding: 15px; border-radius: 12px; border-left: 5px solid #FF6B6B;">
-                            <strong>1. แฮดลีย์เซลล์ (Hadley Cell) [0° - 30°]</strong><br>
-                            อากาศร้อนบริเวณเส้นศูนย์สูตรยกตัวขึ้น และไปจมตัวลงที่ละติจูด 30° ทำให้เกิด <em>ลมค้า (Trade Winds)</em> พัดเข้าหาศูนย์สูตร
-                        </div>
-                        <div style="background: rgba(255,255,255,0.8); padding: 15px; border-radius: 12px; border-left: 5px solid #FBD46D;">
-                            <strong>2. เฟอร์เรลเซลล์ (Ferrel Cell) [30° - 60°]</strong><br>
-                            การหมุนเวียนที่เกิดจากการผลักดันของเซลล์ข้างเคียง ทำให้เกิด <em>ลมฝ่ายตะวันตก (Westerlies)</em> พัดจากละติจูด 30° ไปยัง 60°
-                        </div>
-                        <div style="background: rgba(255,255,255,0.8); padding: 15px; border-radius: 12px; border-left: 5px solid #4F8A8B;">
-                            <strong>3. โพลาร์เซลล์ (Polar Cell) [60° - 90°]</strong><br>
-                            อากาศเย็นจัดที่ขั้วโลกจมตัวลงและพัดมายังละติจูด 60° (เกิดแนวปะทะอากาศขั้วโลก) ทำให้เกิด <em>ลมฝ่ายตะวันออก (Polar Easterlies)</em>
-                        </div>
+                    <h3 style="font-size: 1.5rem; color: #333;">🌍 ทำไมอากาศบนโลกจึงต้องหมุนเวียน?</h3>
+                    <p style="margin-bottom: 15px;">จุดเริ่มต้นมาจากการที่ดวงอาทิตย์ส่งความร้อนมายังโลกไม่เท่ากัน บริเวณเส้นศูนย์สูตรรับความร้อนมากที่สุดในขณะที่ขั้วโลกเย็นจัด ธรรมชาติจึงพยายามรักษาสมดุลโดยการถ่ายเทความร้อนจากศูนย์สูตรไปยังขั้วโลก ก่อให้เกิด "กระแสลม" ในสเกลระดับโลก ซึ่งนักวิทยาศาสตร์ได้สร้างแบบจำลองเพื่ออธิบายปรากฏการณ์นี้ออกเป็น 2 ยุค ดังนี้</p>
+                    
+                    <div class="content-box">
+                        <strong style="font-size: 1.1rem; color: #555;">1. แบบจำลองแบบเซลล์เดียว (Single Cell Model)</strong><br>
+                        <p style="font-size: 0.9rem; color: #777;">เป็นแนวคิดยุคแรกเริ่มที่เสนอโดย จอร์จ แฮดลีย์ (George Hadley)</p>
+                        <ul style="margin-top: 10px;">
+                            <li><strong>แนวคิด:</strong> อากาศร้อนที่ศูนย์สูตรยกตัวขึ้นแล้วไหลไปที่ขั้วโลก จากนั้นอากาศเย็นที่ขั้วโลกจะจมตัวและไหลกลับมาที่ศูนย์สูตร เกิดเป็นวงจรใหญ่เพียง 1 วงจร</li>
+                            <li><strong>ข้อจำกัด:</strong> ทฤษฎีนี้ตั้งอยู่บนสมมติฐานที่ว่า พื้นผิวโลกเหมือนกันทั้งหมด (เป็นน้ำล้วนหรือดินล้วน) และ "โลกไม่มีการหมุนรอบตัวเอง" ซึ่งขัดแย้งกับความเป็นจริง ทำให้แบบจำลองนี้อธิบายสภาพอากาศจริงไม่ได้</li>
+                        </ul>
                     </div>
+
+                    <div class="content-box">
+                        <strong style="font-size: 1.1rem; color: #555;">2. แบบจำลองการหมุนเวียนอากาศแบบทั่วไป (General Circulation)</strong><br>
+                        <p style="margin-top: 5px;">เมื่อนำปัจจัยเรื่อง การหมุนรอบตัวเองของโลก (ซึ่งทำให้เกิดแรงคอริออลิส) และ ความแตกต่างของพื้นผิวโลก (ทวีปและมหาสมุทร) มาคำนวณ วงจรลมขนาดใหญ่เซลล์เดียวจึงแตกออกเป็น 3 วงจรย่อย (3 เซลล์) ในแต่ละซีกโลก ดังนี้</p>
+                    </div>
+
+                    <div class="content-box" style="border-left: 5px solid #FF6B6B;">
+                        <strong>🌪️ 1. แฮดลีย์เซลล์ (Hadley Cell) | แถบเขตร้อน (0° - 30°)</strong>
+                        <ul>
+                            <li><strong>กลไก:</strong> อากาศร้อนชื้นที่เส้นศูนย์สูตรยกตัวขึ้น (เกิดเมฆและฝนตกชุก) ไหลไปทางขั้วโลก เมื่อเย็นลงจะจมตัวลงสู่พื้นบริเวณละติจูด 30°</li>
+                            <li><strong>ลักษณะภูมิอากาศ:</strong> ร้อนชื้น ฝนตกสม่ำเสมอ เป็นที่ตั้งของป่าดิบชื้น (Tropical Rainforest)</li>
+                            <li><strong>ข้อควรรู้:</strong> ประเทศไทยตั้งอยู่ในเขตอิทธิพลนี้ จึงได้รับลมมรสุมและมีร่องความกดอากาศต่ำ (ITCZ) พาดผ่าน ทำให้มีฝนตกชุก</li>
+                        </ul>
+                    </div>
+
+                    <div class="content-box" style="border-left: 5px solid #FBD46D;">
+                        <strong>🍂 2. เซลล์เฟอร์เรล (Ferrel Cell) | แถบละติจูดกลาง (30° - 60°)</strong>
+                        <ul>
+                            <li><strong>กลไก:</strong> เป็นเซลล์ที่อยู่ตรงกลาง ทำหน้าที่เชื่อมระหว่างเขตร้อนและเขตหนาว อากาศที่จมตัวลงบริเวณละติจูด 30° (ซึ่งเป็นอากาศแห้ง) จะไหลไปปะทะกับอากาศเย็นที่ละติจูด 60° แล้วยกตัวขึ้น</li>
+                            <li><strong>ลักษณะภูมิอากาศ:</strong> บริเวณ 30° ที่อากาศแห้งจมตัวลง มักก่อให้เกิด เขตทะเลทราย ส่วนพื้นที่ละติจูดสูงขึ้นไปจะมีภูมิอากาศแบบอบอุ่น มี 4 ฤดูกาลชัดเจน</li>
+                            <li><strong>ข้อควรรู้:</strong> บริเวณนี้มี "ลมตะวันตก" พัดสม่ำเสมอ ซึ่งมีความสำคัญต่อเส้นทางการเดินเรือและเครื่องบิน</li>
+                        </ul>
+                    </div>
+
+                    <div class="content-box" style="border-left: 5px solid #4F8A8B;">
+                        <strong>❄️ 3. โพลาร์เซลล์ (Polar Cell) | แถบขั้วโลก (60° - 90°)</strong>
+                        <ul>
+                            <li><strong>กลไก:</strong> อากาศเย็นจัดและหนักที่ขั้วโลกจมตัวลง ไหลลงมาปะทะกับอากาศที่อุ่นกว่าจากเซลล์เฟอร์เรลที่บริเวณละติจูด 60° เกิดเป็น "แนวปะทะอากาศขั้วโลก" (Polar Front) ที่ทำให้สภาพอากาศแปรปรวน</li>
+                            <li><strong>ลักษณะภูมิอากาศ:</strong> หนาวเย็นตลอดปี อุณหภูมิต่ำกว่า -10°C มีหิมะหรือฝนตกน้อยมาก เนื่องจากอากาศเย็นจัดไม่สามารถอุ้มไอน้ำได้ พื้นที่ส่วนใหญ่เป็นทุนดราหรือน้ำแข็งถาวร</li>
+                        </ul>
+                    </div>
+                    
+                    <p style="background: rgba(255,255,255,0.9); padding: 15px; border-radius: 12px; font-weight: bold; text-align: center; color: var(--primary);">
+                        💡 สรุปใจความสำคัญ:<br>
+                        การที่โลกหมุนรอบตัวเองและมีสภาพภูมิประเทศที่หลากหลาย ทำให้กระแสลมโลกแบ่งออกเป็น 3 แถบหลัก (แฮดลีย์, เฟอร์เรล, โพลาร์) ซึ่งความแตกต่างของการยกตัวและจมตัวของอากาศในแต่ละแถบนี้เอง ที่เป็นตัวกำหนดว่าพื้นที่ใดบนโลกจะเป็นป่าดิบชื้น ทะเลทรายแห้งแล้ง หรือทุ่งน้ำแข็งขั้วโลก
+                    </p>
+
+                    <img src="https://i.postimg.cc/xdRB06sJ/cell.png" class="content-img" referrerpolicy="no-referrer" alt="แบบจำลองการหมุนเวียนอากาศ">
                 </div>
             </div>
 
@@ -598,14 +631,16 @@
             <h3 id="modal-title" style="margin-bottom: 15px; color: var(--accent);">แจ้งเตือน</h3>
             <p id="modal-message" style="margin-bottom: 20px;">ข้อความ</p>
             <button onclick="closeModal()">ตกลง</button>
-        </dPGF
+        </div>
     </div>
 
     <script>
+        // --- GOOGLE SHEETS WEB APP URL ---
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwJVYWZY72TMA7jbrW7df_qL5FrzavItl-O3gr_M34nqqStihHeG6_0irSyAIbqvs4x/exec";
+
         // --- DATA STRUCTURE ---
-        // questions data
         const questionsDB = [
-            { q: "ลมเกิดขึ้นจากสาเหตุใดเป็นหลัก?", o: ["ความแตกต่างของความกดอากาศ แรง PGF", "ความแตกต่างของความชื้น", "แรงดึงดูดของโลก", "กระแสน้ำในมหาสมุทร"], a: 0 },
+            { q: "ลมเกิดขึ้นจากสาเหตุใดเป็นหลัก?", o: ["ความแตกต่างของความกดอากาศ", "ความแตกต่างของความชื้น", "แรงดึงดูดของโลก", "กระแสน้ำในมหาสมุทร"], a: 0 },
             { q: "ทิศทางการพัดของลมบนพื้นผิวโลก เป็นอย่างไร?", o: ["พัดจากหย่อมความกดอากาศต่ำไปสูง", "พัดจากหย่อมความกดอากาศสูงไปต่ำ", "พัดจากแนวเหนือใต้เสมอ", "พัดจากตะวันออกไปตะวันตกเสมอ"], a: 1 },
             { q: "แรงคอริออลิส (Coriolis Force) เกิดจากสิ่งใด?", o: ["แรงดึงดูดของดวงจันทร์", "การหมุนรอบตัวเองของโลก", "การโคจรรอบดวงอาทิตย์", "แรงเสียดทานของพื้นผิวโลก"], a: 1 },
             { q: "แรงคอริออลิส ทำให้ลมในซีกโลกเหนือเบนไปทางใด?", o: ["เบนไปทางซ้าย", "เบนไปทางขวา", "ไม่เบนทิศทาง", "พัดขึ้นในแนวดิ่ง"], a: 1 },
@@ -655,6 +690,25 @@
 
         function saveAllStudents() {
             localStorage.setItem('astro_students_data', JSON.stringify(allStudents));
+        }
+
+        // --- SYNC TO GOOGLE SHEETS ---
+        function sendDataToGoogleSheet() {
+            const payload = {
+                name: currentUser.name,
+                preScore: currentUser.preScore,
+                postScore: currentUser.postScore
+            };
+            
+            // ส่งข้อมูลด้วย mode: 'no-cors' เพื่อไม่ให้เบราว์เซอร์บล็อก
+            fetch(SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            })
+            .then(() => console.log("ส่งข้อมูลไปยัง Google Sheets สำเร็จ"))
+            .catch(err => console.error("เกิดข้อผิดพลาดในการส่งข้อมูล: ", err));
         }
 
         function showModal(title, msg) {
@@ -740,13 +794,11 @@
                 }
             });
 
-            // Highlight pre-test if not done
             if (!hasPre) {
                 document.getElementById('nav-pre').classList.add('highlight-btn');
                 switchSection('pre-test-section', document.getElementById('nav-pre'));
             } else {
                 document.getElementById('nav-pre').classList.remove('highlight-btn');
-                // Auto show results if both done, else show content
                 if (currentUser.postScore !== null) {
                     switchSection('result-section', document.getElementById('nav-result'));
                     updateResultView();
@@ -759,7 +811,6 @@
         function checkUnlockAndSwitch(sectionId, btn) {
             if (currentUser.preScore === null) {
                 showModal('แจ้งเตือน', 'กรุณาทำ "แบบทดสอบก่อนเรียน" ให้เสร็จก่อนนะคะ/ครับ เพื่อปลดล็อกเนื้อหาบทเรียน 🔒');
-                // Blink the pre-test button
                 const preBtn = document.getElementById('nav-pre');
                 preBtn.classList.add('highlight-btn');
                 setTimeout(() => preBtn.classList.remove('highlight-btn'), 2000);
@@ -792,10 +843,8 @@
             qIndex = 0;
             score = 0;
             
-            // Prepare questions (deep copy)
             selectedQuestions = JSON.parse(JSON.stringify(questionsDB));
             
-            // If post-test, shuffle options
             if (type === 'post') {
                 selectedQuestions.forEach(q => {
                     const originalAnsText = q.o[q.a];
@@ -877,6 +926,9 @@
             if(idx > -1) allStudents[idx] = currentUser;
             saveAllStudents();
             
+            // ส่งข้อมูลไป Google Sheets อัตโนมัติเบื้องหลัง
+            sendDataToGoogleSheet();
+
             updateNavigationState();
         }
 
@@ -953,7 +1005,6 @@
         function selectGameItem(el, type) {
             if (el.classList.contains('matched')) return;
 
-            // Deselect others of same type
             document.querySelectorAll(`.game-item.${type}`).forEach(d => {
                 if(!d.classList.contains('matched')) d.classList.remove('selected')
             });
@@ -972,7 +1023,6 @@
                 const id2 = selectedDef.dataset.id;
 
                 if (id1 === id2) {
-                    // Match
                     selectedTerm.classList.remove('selected');
                     selectedDef.classList.remove('selected');
                     selectedTerm.classList.add('matched');
@@ -983,7 +1033,6 @@
                         setTimeout(() => showModal('เก่งมาก!', 'คุณจับคู่คำศัพท์ได้ถูกต้องทั้งหมด! 🎉'), 500);
                     }
                 } else {
-                    // Wrong
                     const t = selectedTerm;
                     const d = selectedDef;
                     t.classList.add('wrong');
@@ -1020,7 +1069,7 @@
                 document.getElementById('teacher-dashboard').classList.remove('hidden');
                 renderTeacherDashboard();
             } else {
-                alert('รหัสผ่านไม่ถูกต้อง');
+                alert('รหัสผ่านไม่ถูกต้อง (ค่าเริ่มต้นคือ N241356)');
             }
         }
 
@@ -1034,11 +1083,10 @@
             tbody.innerHTML = '';
 
             if (allStudents.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">ยังไม่มีข้อมูลผู้เรียน</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">ยังไม่มีข้อมูลผู้เรียนบนเครื่องนี้</td></tr>';
                 return;
             }
 
-            // Sort by timestamp newest first
             const sortedStudents = [...allStudents].sort((a,b) => b.timestamp - a.timestamp);
 
             sortedStudents.forEach((s, index) => {
@@ -1076,7 +1124,7 @@
         }
 
         function clearAllData() {
-            if (confirm('คุณแน่ใจหรือไม่ว่าจะลบข้อมูลผู้เรียน "ทั้งหมด"? (ไม่สามารถกู้คืนได้)')) {
+            if (confirm('คุณแน่ใจหรือไม่ว่าจะลบข้อมูลผู้เรียนบนเครื่องนี้ "ทั้งหมด"? (ไม่สามารถกู้คืนได้)')) {
                 allStudents = [];
                 saveAllStudents();
                 renderTeacherDashboard();
